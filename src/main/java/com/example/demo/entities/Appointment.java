@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -111,4 +112,16 @@ public class Appointment {
         return false;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Appointment)) return false;
+        Appointment that = (Appointment) o;
+        return Objects.equals(getPatient(), that.getPatient()) && Objects.equals(getDoctor(), that.getDoctor()) && Objects.equals(getRoom(), that.getRoom()) && Objects.equals(getStartsAt(), that.getStartsAt()) && Objects.equals(getFinishesAt(), that.getFinishesAt());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPatient(), getDoctor(), getRoom(), getStartsAt(), getFinishesAt());
+    }
 }

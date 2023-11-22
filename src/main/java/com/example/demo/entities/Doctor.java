@@ -25,5 +25,4 @@ public class Doctor extends Person {
         this.id = id;
     }
 
-    
 }

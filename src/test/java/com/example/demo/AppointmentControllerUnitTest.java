@@ -58,6 +58,8 @@ class AppointmentControllerUnitTest{
 
         Appointment appointment = new Appointment(patient, doctor, room, startsAt, finishesAt);
 
+        when(appointmentRepository.save(any(Appointment.class))).thenReturn(appointment);
+
         mockMvc.perform(post("/api/appointment").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(appointment)))
                 .andExpect(status().isOk());
@@ -77,6 +79,11 @@ class AppointmentControllerUnitTest{
         LocalDateTime finishesAt = LocalDateTime.parse("19:30 24/04/2023", formatter);
 
         Appointment appointment = new Appointment(patient, doctor, room, startsAt, finishesAt);
+
+        List<Appointment> appointments = new ArrayList<Appointment>();
+        appointments.add(appointment);
+
+        when(appointmentRepository.findAll()).thenReturn(appointments);
 
         mockMvc.perform(post("/api/appointment").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(appointment)))

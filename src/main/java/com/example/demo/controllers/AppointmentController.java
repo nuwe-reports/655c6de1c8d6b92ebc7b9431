@@ -6,6 +6,7 @@ import com.example.demo.entities.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,11 +53,29 @@ public class AppointmentController {
 
     @PostMapping("/appointment")
     public ResponseEntity<List<Appointment>> createAppointment(@RequestBody Appointment appointment){
-        /** TODO 
-         * Implement this function, which acts as the POST /api/appointment endpoint.
-         * Make sure to check out the whole project. Specially the Appointment.java class
-         */
-        return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+
+        List<Appointment> appointments = new ArrayList<>();
+        appointmentRepository.findAll().forEach(appointments::add);
+
+        HttpStatus status = validations(appointment, appointments);
+        if (status != null) return new ResponseEntity<>(status);
+
+        Appointment saved=appointmentRepository.save(appointment);
+        appointments.add(saved);
+
+        return new ResponseEntity<>(appointments,HttpStatus.OK);
+    }
+
+    private static HttpStatus validations(Appointment appointment, List<Appointment> appointments) {
+        if(appointments.contains(appointment)){
+            return HttpStatus.BAD_REQUEST;
+        }
+
+        List<Appointment> overlapped= appointments.stream().filter(x->x.overlaps(appointment)).collect(Collectors.toList());
+        if(!overlapped.isEmpty()){
+            return HttpStatus.NOT_ACCEPTABLE;
+        }
+        return null;
     }
 
 
