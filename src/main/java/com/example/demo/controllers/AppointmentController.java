@@ -60,8 +60,7 @@ public class AppointmentController {
         HttpStatus status = validations(appointment, appointments);
         if (status != null) return new ResponseEntity<>(status);
 
-        Appointment saved=appointmentRepository.save(appointment);
-        appointments.add(saved);
+        appointments.add(appointmentRepository.save(appointment));
 
         return new ResponseEntity<>(appointments,HttpStatus.OK);
     }
