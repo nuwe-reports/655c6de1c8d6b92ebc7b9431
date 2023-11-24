@@ -13,5 +13,5 @@ RUN mkdir /app
 ##RUN addgroup --system javauser && adduser -S -s /bin/false -G javauser javauser
 COPY --from=build /project/target/accenture-techhub-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/java-application.war
 
-EXPOSE 8080
+EXPOSE 8080 5005
 CMD ["catalina.sh", "run"]
