@@ -1,0 +1,19 @@
+FROM maven:3.8.2-jdk-11 AS build
+
+RUN mkdir /project
+
+COPY pom.xml /project
+COPY src /project/src
+WORKDIR /project
+
+RUN mvn clean package
+
+RUN mvn test || (echo "Pruebas fallidas, abortando la construcción" && exit 1)
+
+FROM tomcat:latest
+RUN mkdir /app
+##RUN addgroup --system javauser && adduser -S -s /bin/false -G javauser javauser
+COPY --from=build /project/target/accenture-techhub-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/java-application.war
+
+EXPOSE 8080 5005
+CMD ["catalina.sh", "run"]
