@@ -2,7 +2,6 @@ target/*
 target/
 .vscode/*
 .vscode/
-.env
 .m2
 .idea
 .github
