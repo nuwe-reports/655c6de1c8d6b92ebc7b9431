@@ -8,6 +8,8 @@ WORKDIR /project
 
 RUN mvn clean package
 
+RUN mvn test || (echo "Pruebas fallidas, abortando la construcción" && exit 1)
+
 FROM tomcat:latest
 RUN mkdir /app
 ##RUN addgroup --system javauser && adduser -S -s /bin/false -G javauser javauser
