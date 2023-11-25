@@ -2,7 +2,7 @@ target/*
 target/
 .vscode/*
 .vscode/
-.m2
+.m2/*
 .idea
 .github
 .idea
