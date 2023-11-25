@@ -8,7 +8,7 @@ interact to solve this business
 
 # Class Diagram
 
-![](/home/georman/Documents/COURSES/655c6de1c8d6b92ebc7b9431/Appointment.png)
+![](Appointment.png)
 
 An appointment is booked by room, doctor and start and finish date. this will be
 more or less one hour ,and it can't overlap with another appointment in the same room
