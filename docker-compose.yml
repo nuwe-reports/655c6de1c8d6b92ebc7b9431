@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    #restart: unless-stopped
+    restart: always
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+      - MYSQL_PASSWORD=$MYSQLDB_PASSWORD
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - ./init_scripts:/docker-entrypoint-initdb.d
+      - db:/var/lib/mysql
+  app:
+    depends_on:
+      - mysqldb
+    #command: sh -c './wait-for mysql_db:3306 -- npm start'
+    #command: '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'
+    build:
+       context: ./
+       dockerfile: Dockerfile.maven
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+      - $DOCKER_DEBUG_PORT:$DOCKER_DEBUG_PORT
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
